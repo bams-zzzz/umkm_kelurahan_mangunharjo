@@ -99,12 +99,12 @@ class UmkmController extends Controller
 
         $produk = $query->latest()->paginate(12);
 
-        return view('publik.produk', compact('produk'));
+        return view('pages.home', compact('produk'));
     }
 
     public function detail($id)
     {
         $produk = Umkm::findOrFail($id);
-        return view('publik.detail', compact('produk'));
+        return view('pages.detail-produk', compact('produk'));
     }
 }
