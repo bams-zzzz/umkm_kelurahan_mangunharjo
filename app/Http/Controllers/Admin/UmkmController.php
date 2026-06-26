@@ -28,11 +28,6 @@ class UmkmController extends Controller
             'no_wa' => 'required|string|max:20',
             'deskripsi_usaha' => 'nullable|string',
             'foto_profil' => 'nullable|image|max:2048',
-            'kategori' => 'nullable|in:plastik,kardus,ban_bekas,kaca',
-            'status' => 'required|in:ready,pre_order,out_of_stock',
-            'alat_bahan' => 'nullable|string',
-            'langkah_pembuatan' => 'nullable|string',
-            'fungsi_kegunaan' => 'nullable|string',
         ]);
 
         if ($request->hasFile('foto_profil')) {
@@ -58,11 +53,6 @@ class UmkmController extends Controller
             'no_wa' => 'required|string|max:20',
             'deskripsi_usaha' => 'nullable|string',
             'foto_profil' => 'nullable|image|max:2048',
-            'kategori' => 'nullable|in:plastik,kardus,ban_bekas,kaca',
-            'status' => 'required|in:ready,pre_order,out_of_stock',
-            'alat_bahan' => 'nullable|string',
-            'langkah_pembuatan' => 'nullable|string',
-            'fungsi_kegunaan' => 'nullable|string',
         ]);
 
         if ($request->hasFile('foto_profil')) {
@@ -82,24 +72,19 @@ class UmkmController extends Controller
 
     public function publik(Request $request)
     {
-        $query = Umkm::query();
+        $umkm = Umkm::query();
 
-        if ($request->filled('search')) {
-            $query->where('nama_usaha', 'like', '%' . $request->search . '%')
-                  ->orWhere('deskripsi_usaha', 'like', '%' . $request->search . '%');
+        if ($request->search) {
+            $umkm->where('nama_usaha', 'like', '%'.$request->search.'%');
         }
 
-        if ($request->filled('kategori')) {
-            $query->where('kategori', $request->kategori);
+        if ($request->kategori) {
+            $umkm->where('kategori', $request->kategori);
         }
 
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
+        $umkm = $umkm->get();
 
-        $produk = $query->latest()->paginate(12);
-
-        return view('pages.home', compact('produk'));
+        return view('pages.katalog', compact('umkm'));
     }
 
     public function detail($id)

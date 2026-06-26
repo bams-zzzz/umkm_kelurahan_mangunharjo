@@ -8,8 +8,9 @@ use App\Http\Controllers\Admin\KategoriProdukController;
 use App\Http\Controllers\HomeController;
 
 // Halaman publik
-Route::get('/', [UmkmController::class, 'publik'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/produk/{id}', [UmkmController::class, 'detail'])->name('produk.detail');
+Route::get('/katalog', [UmkmController::class, 'publik'])->name('katalog');
 
 // Auth (dari Breeze)
 require __DIR__.'/auth.php';

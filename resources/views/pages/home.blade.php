@@ -13,20 +13,20 @@
     </header>
 
     <section id="produk" class="section-container" style="background-color: #f9f9f9;">
-        <h2 style="text-align: center; margin-bottom: 20px;">Katalog Kerajinan Terbaru</h2>
+        <h2 style="text-align: center; margin-bottom: 20px;">Katalog Produk</h2>
         
         <div class="katalog-tabs">
-            <button class="tab-btn active" data-target="kerajinan">Kerajinan Tangan</button>
+            <button class="tab-btn active" data-target="kerajinan">Olahan Pangan</button>
             <div class="tab-separator"></div>
-            <button class="tab-btn" data-target="pangan">Olahan Pangan</button>
+            <button class="tab-btn" data-target="pangan">Jasa & Produk Lainnya</button>
         </div>
 
         <div class="katalog-wrapper">
             <aside class="katalog-sidebar">
                 <div id="filter-kerajinan">
-                    <h3 style="text-align: center;">Kategori Bahan</h3>
+                    <h3 style="text-align: center;">Kategori Pangan</h3>
                     <ul class="kategori-list">
-                        <li><input type="checkbox" id="plastik" class="filter-cb" data-type="kerajinan" value="plastik"> <label for="plastik">Plastik</label></li>
+                        <li><input type="checkbox" id="Camilan" class="filter-cb" data-type="kerajinan" value="plastik"> <label for="plastik">Plastik</label></li>
                         <li><input type="checkbox" id="kardus" class="filter-cb" data-type="kerajinan" value="kardus"> <label for="kardus">Kardus/Kertas</label></li>
                         <li><input type="checkbox" id="ban_bekas" class="filter-cb" data-type="kerajinan" value="ban_bekas"> <label for="ban_bekas">Ban Bekas</label></li>
                         <li><input type="checkbox" id="kaca" class="filter-cb" data-type="kerajinan" value="kaca"> <label for="kaca">Kaca</label></li>
@@ -53,7 +53,7 @@
         </div>
 
         <div style="margin-top: 30px; display: flex; justify-content: center;">
-            {{ $produk->links() }}
+            {{ $produk->links('vendor.pagination.simple-custom') }}
         </div>
     </section>
 

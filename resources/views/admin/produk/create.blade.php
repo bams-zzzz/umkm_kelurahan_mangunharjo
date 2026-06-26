@@ -29,9 +29,21 @@
 
         <label>Status</label>
         <select name="status">
+            <option value="ready">Ready</option>
+            <option value="pre_order">Pre-Order</option>
+            <option value="out_of_stock">Out of Stock</option>
             <option value="tersedia">Tersedia</option>
             <option value="habis">Habis</option>
         </select>
+
+        <label>Alat dan Bahan</label>
+        <textarea name="alat_bahan">{{ old('alat_bahan') }}</textarea>
+
+        <label>Langkah Pembuatan</label>
+        <textarea name="langkah_pembuatan">{{ old('langkah_pembuatan') }}</textarea>
+
+        <label>Fungsi / Keunggulan</label>
+        <textarea name="fungsi_kegunaan">{{ old('fungsi_kegunaan') }}</textarea>
 
         <label>Foto Produk</label>
         <input type="file" name="foto">

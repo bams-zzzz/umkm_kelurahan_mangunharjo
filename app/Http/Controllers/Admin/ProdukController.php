@@ -16,34 +16,33 @@ class ProdukController extends Controller
         return view('admin.produk.index', compact('produk'));
     }
 
-    public function create()
-    {
-        $umkm = Umkm::all();
-        $kategori = KategoriProduk::all();
-        return view('admin.produk.create', compact('umkm', 'kategori'));
-    }
+public function create()
+{
+    // Ambil data buat dropdown di form
+    $umkm = Umkm::select('id', 'nama_usaha')->get();
+    $kategori = KategoriProduk::select('id', 'nama_kategori')->get();
+    
+    return view('admin.produk.create', compact('umkm', 'kategori'));
+}
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'nama_produk' => 'required|string|max:255',
-            'deskripsi' => 'required|string',
-            'harga' => 'required|integer|min:0',
-            'satuan' => 'required|string|max:50',
-            'status' => 'required|in:tersedia,habis',
-            'foto' => 'required|image|max:2048',
-            'is_featured' => 'boolean',
-            'kategori_id' => 'required|exists:kategori_produk,id',
-            'umkm_id' => 'required|exists:umkm,id',
-        ]);
+public function store(Request $request)
+{
+    // Validasi ketat biar aman
+    $validated = $request->validate([
+        'nama_produk' => 'required|string|max:255',
+        'harga'       => 'required|numeric|min:0',
+        'satuan'      => 'required|string',
+        'status'      => 'required|in:ready,pre_order,out_of_stock,tersedia,habis',
+        'umkm_id'     => 'required|exists:umkm,id',
+        'kategori_id' => 'required|exists:kategori_produk,id',
+        // Tambahin validasi kolom lain kalau ada
+    ]);
 
-        $validated['foto'] = $request->file('foto')->store('produk', 'public');
-        $validated['is_featured'] = $request->boolean('is_featured');
+    // Insert pakai Eloquent (udah otomatis pakai prepared statements di balik layar)
+    Produk::create($validated);
 
-        Produk::create($validated);
-
-        return redirect()->route('admin.produk.index')->with('success', 'Produk berhasil ditambahkan.');
-    }
+    return redirect()->route('admin.produk.index')->with('success', 'Produk berhasil ditambah!');
+}
 
     public function edit(Produk $produk)
     {
@@ -59,11 +58,14 @@ class ProdukController extends Controller
             'deskripsi' => 'required|string',
             'harga' => 'required|integer|min:0',
             'satuan' => 'required|string|max:50',
-            'status' => 'required|in:tersedia,habis',
+            'status' => 'required|in:tersedia,habis,ready,pre_order,out_of_stock',
             'foto' => 'nullable|image|max:2048',
             'is_featured' => 'boolean',
             'kategori_id' => 'required|exists:kategori_produk,id',
             'umkm_id' => 'required|exists:umkm,id',
+            'alat_bahan' => 'nullable|string',
+            'langkah_pembuatan' => 'nullable|string',
+            'fungsi_kegunaan' => 'nullable|string',
         ]);
 
         if ($request->hasFile('foto')) {

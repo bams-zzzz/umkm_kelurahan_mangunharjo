@@ -1,6 +1,10 @@
 @php
     $isPangan = in_array($item->kategori, ['makanan', 'minuman']);
     $mainType = $isPangan ? 'pangan' : 'kerajinan';
+    $waNumber = preg_replace('/[^0-9]/', '', $item->no_wa);
+    if (str_starts_with($waNumber, '0')) {
+        $waNumber = '62' . substr($waNumber, 1);
+    }
 @endphp
 
 <div class="produk-card" data-main="{{ $mainType }}" data-kategori="{{ $item->kategori }}">
@@ -20,7 +24,7 @@
     <button class="btn-detail" 
             data-title="{{ $item->nama_usaha }}" 
             data-img="{{ $item->foto_profil ? asset('storage/' . $item->foto_profil) : '' }}"
-            data-author="{{ $item->nama_pemilik }} ({{ $item->alamat }})<br>📞 WA: {{ $item->no_wa }}"
+            data-author="{{ $item->nama_pemilik }} ({{ $item->alamat }})<br>📞 WA: <a href='https://wa.me/{{ $waNumber }}' target='_blank' style='color: #25D366; text-decoration: none; font-weight: bold;'>{{ $item->no_wa }}</a>"
             data-bahan="{{ $item->alat_bahan }}"
             data-langkah="{{ $item->langkah_pembuatan }}"
             data-fungsi="{{ $item->fungsi_kegunaan }}">
