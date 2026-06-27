@@ -130,3 +130,21 @@ button { cursor: pointer; border: none; font-weight: bold; }
     .katalog-container { border-left: none; padding-left: 0; }
     .modal-content { margin-top: 20px; }
 }
+
+/* ================= TOMBOL CONTACT ================= */
+.btn-map, .btn-wa-contact {
+    display: inline-block;
+    background: #34d399; /* Hijau mint ala katalog produk */
+    color: #000;         /* Teks hitam */
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-top: 10px;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.btn-map:hover, .btn-wa-contact:hover { 
+    background: #059669; /* Hijau gelap saat disorot mouse */
+    color: #fff;         /* Teks berubah putih */
+}
