@@ -5,14 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Umkm;
 use Illuminate\Http\Request;
+use App\Models\Produk;
 
 class UmkmController extends Controller
 {
-    public function index()
-    {
-        $umkm = Umkm::latest()->paginate(10);
-        return view('admin.umkm.index', compact('umkm'));
-    }
+public function index()
+{
+    $umkm = Umkm::latest()->paginate(10);
+    return view('admin.umkm.index', compact('umkm'));
+}
 
     public function create()
     {
@@ -22,7 +23,7 @@ class UmkmController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_usaha' => 'required|string|max:255',
+            'nama_produk' => 'required|string|max:255',
             'nama_pemilik' => 'required|string|max:255',
             'alamat' => 'required|string|max:255',
             'no_wa' => 'required|string|max:20',
@@ -47,7 +48,7 @@ class UmkmController extends Controller
     public function update(Request $request, Umkm $umkm)
     {
         $validated = $request->validate([
-            'nama_usaha' => 'required|string|max:255',
+            'nama_produk' => 'required|string|max:255',
             'nama_pemilik' => 'required|string|max:255',
             'alamat' => 'required|string|max:255',
             'no_wa' => 'required|string|max:20',
@@ -72,24 +73,26 @@ class UmkmController extends Controller
 
     public function publik(Request $request)
     {
-        $umkm = Umkm::query();
+        $produk = Produk::with(['umkm', 'kategori']);
 
         if ($request->search) {
-            $umkm->where('nama_usaha', 'like', '%'.$request->search.'%');
+            $produk->where('nama_produk', 'like', '%'.$request->search.'%');
         }
 
         if ($request->kategori) {
-            $umkm->where('kategori', $request->kategori);
+            $produk->whereHas('kategori', function ($q) use ($request) {
+                $q->where('nama_kategori', $request->kategori);
+            });
         }
 
-        $umkm = $umkm->get();
+        $produk = $produk->get();
 
-        return view('pages.katalog', compact('umkm'));
+        return view('pages.katalog', compact('produk'));
     }
 
     public function detail($id)
     {
-        $produk = Umkm::findOrFail($id);
+        $produk = \App\Models\Produk::with(['umkm', 'kategori'])->findOrFail($id);
         return view('pages.detail-produk', compact('produk'));
     }
 }

@@ -20,7 +20,7 @@
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead class="bg-gray-50 dark:bg-gray-700">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nama Usaha</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nama Produk</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Pemilik</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">No WA</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
@@ -29,7 +29,7 @@
             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 @foreach ($umkm as $item)
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                    <td class="px-6 py-4 text-sm text-gray-800 dark:text-gray-200">{{ $item->nama_usaha }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-800 dark:text-gray-200">{{ $item->produk->pluck('nama_produk')->join(', ') ?: '-' }}</td>
                     <td class="px-6 py-4 text-sm text-gray-800 dark:text-gray-200">{{ $item->nama_pemilik }}</td>
                     <td class="px-6 py-4 text-sm text-gray-800 dark:text-gray-200">{{ $item->no_wa }}</td>
                     <td class="px-6 py-4 text-sm flex gap-2">

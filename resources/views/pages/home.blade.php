@@ -71,10 +71,6 @@
                         <img src="{{ asset('images/panah.png') }}" class="arrow-img" alt="Kanan">
                     </button>
                 </div>
-                
-                <div style="margin-top: 30px; display: flex; justify-content: center;">
-                    {{ $produk->links('vendor.pagination.simple-custom') }}
-                </div>
             </div>
         </div>
     </section>

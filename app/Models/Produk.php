@@ -7,8 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Produk extends Model
 {
     protected $table = 'produk';
-    // Bebasin mass assignment untuk kolom yang dibutuhin
-    protected $fillable = ['nama_produk', 'deskripsi', 'harga', 'satuan', 'status', 'kategori_id', 'umkm_id'];
+
+    protected $fillable = [
+        'nama_produk', 'deskripsi', 'harga', 'satuan', 'status',
+        'foto', 'is_featured', 'kategori_id', 'umkm_id',
+        'alat_bahan', 'langkah_pembuatan', 'fungsi_kegunaan',
+    ];
 
     public function umkm()
     {

@@ -27,18 +27,28 @@ public function create()
 
 public function store(Request $request)
 {
-    // Validasi ketat biar aman
     $validated = $request->validate([
-        'nama_produk' => 'required|string|max:255',
-        'harga'       => 'required|numeric|min:0',
-        'satuan'      => 'required|string',
-        'status'      => 'required|in:ready,pre_order,out_of_stock,tersedia,habis',
-        'umkm_id'     => 'required|exists:umkm,id',
-        'kategori_id' => 'required|exists:kategori_produk,id',
-        // Tambahin validasi kolom lain kalau ada
+        'nama_produk'        => 'required|string|max:255',
+        'deskripsi'          => 'nullable|string',
+        'harga'              => 'required|numeric|min:0',
+        'satuan'             => 'required|string',
+        'status'             => 'required|in:ready,pre_order,out_of_stock,tersedia,habis',
+        'umkm_id'            => 'required|exists:umkm,id',
+        'kategori_id'        => 'required|exists:kategori_produk,id',
+        'foto'               => 'nullable|image|max:2048',
+        'is_featured'        => 'boolean',
+        'alat_bahan'         => 'nullable|string',
+        'langkah_pembuatan'  => 'nullable|string',
+        'fungsi_kegunaan'    => 'nullable|string',
     ]);
 
-    // Insert pakai Eloquent (udah otomatis pakai prepared statements di balik layar)
+    if ($request->hasFile('foto')) {
+        $validated['foto'] = $request->file('foto')->store('produk', 'public');
+    }
+
+    $validated['is_featured'] = $request->boolean('is_featured');
+    $validated['deskripsi'] = $validated['deskripsi'] ?? '';
+
     Produk::create($validated);
 
     return redirect()->route('admin.produk.index')->with('success', 'Produk berhasil ditambah!');

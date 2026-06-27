@@ -8,7 +8,7 @@
         <h2 style="text-align: center; margin-bottom: 40px;">Semua Koleksi UMKM Kelurahan Mangunharjo</h2>
         
         <div class="katalog-wrapper">
-            @foreach($umkm as $item)
+            @foreach($produk as $item)
                 @include('components.product-card', ['item' => $item])
             @endforeach
         </div>

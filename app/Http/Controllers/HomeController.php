@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Umkm;
+use App\Models\Produk;
 
 class HomeController extends Controller
 {
 public function index()
 {
-    $produk = Umkm::latest()->paginate(8);
+    $produk = Produk::with(['umkm', 'kategori'])->latest()->get();
     return view('pages.home', compact('produk'));
 }
 }
