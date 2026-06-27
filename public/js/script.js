@@ -1,99 +1,148 @@
-// --- LOGIKA TABS NAVIGASI & FILTER MULTI-KATEGORI ---
-const tabBtns = document.querySelectorAll('.tab-btn');
-const filterKerajinan = document.getElementById('filter-kerajinan');
-const filterPangan = document.getElementById('filter-pangan');
-const allCards = document.querySelectorAll('.produk-card');
-const allCheckboxes = document.querySelectorAll('.filter-cb');
+let currentTab = 'pangan'; // Default tab pas web dibuka
+let visibleCards = []; // Nyimpen daftar kartu yang lolos filter
+let currentIndex = 0;
+const allCards = document.querySelectorAll('.card');
 
-let currentMain = 'kerajinan'; 
+// ================= FUNGSI GANTI TAB =================
+function switchTab(kategori) {
+    currentTab = kategori;
+    const tabPangan = document.getElementById('tab-pangan');
+    const tabJasa = document.getElementById('tab-jasa');
+    const filterPangan = document.getElementById('filter-pangan');
+    const filterJasa = document.getElementById('filter-jasa');
 
-tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        tabBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentMain = btn.getAttribute('data-target');
+    if (kategori === 'pangan') {
+        tabPangan.classList.add('active');
+        tabJasa.classList.remove('active');
+        filterPangan.style.display = 'block';
+        filterJasa.style.display = 'none';
+    } else {
+        tabJasa.classList.add('active');
+        tabPangan.classList.remove('active');
+        filterJasa.style.display = 'block';
+        filterPangan.style.display = 'none';
+    }
 
-        if(currentMain === 'kerajinan') {
-            filterKerajinan.style.display = 'block';
-            filterPangan.style.display = 'none';
-        } else {
-            filterKerajinan.style.display = 'none';
-            filterPangan.style.display = 'block';
-        }
+    // Reset centangan tiap ganti tab biar bersih
+    document.querySelectorAll('.filter-cb').forEach(cb => cb.checked = false);
+    
+    // Jalankan filter
+    filterCards();
+}
 
-        allCheckboxes.forEach(cb => cb.checked = false);
-        applyFilter();
-    });
-});
-
-function applyFilter() {
-    const activeCbs = Array.from(document.querySelectorAll(`.filter-cb[data-type="${currentMain}"]:checked`)).map(cb => cb.value);
+// ================= FUNGSI FILTER LOGIC =================
+function filterCards() {
+    // Cari checkbox mana aja yang lagi dicentang di dalam tab yang aktif
+    const activeCheckboxes = Array.from(document.querySelectorAll(`#filter-${currentTab} .filter-cb:checked`)).map(cb => cb.value);
+    
+    visibleCards = []; // Kosongkan daftar kartu yang kelihatan
 
     allCards.forEach(card => {
-        const cardMain = card.getAttribute('data-main');
-        const cardCat = card.getAttribute('data-kategori');
+        const cardTab = card.getAttribute('data-tab');
+        const cardCat = card.getAttribute('data-category');
 
-        if(cardMain === currentMain) {
-            if(activeCbs.length === 0 || activeCbs.includes(cardCat)) {
-                card.style.display = 'flex';
-            } else {
-                card.style.display = 'none';
+        // Sembunyikan semua kartu secara default
+        card.classList.remove('active', 'prev', 'next', 'hidden');
+        card.classList.add('d-none'); 
+
+        // Cek apakah kartu ini milik tab yang lagi aktif?
+        if (cardTab === currentTab) {
+            // Kalau nggak ada yang dicentang, tampilin semua. Kalau ada, cocokkan kategorinya.
+            if (activeCheckboxes.length === 0 || activeCheckboxes.includes(cardCat)) {
+                card.classList.remove('d-none'); // Munculin kartunya
+                visibleCards.push(card); // Masukin ke daftar kartu yang bakal masuk slider
             }
+        }
+    });
+
+    // Reset posisi slider ke awal tiap kali filter berubah
+    currentIndex = 0;
+    updateSlider();
+}
+
+// ================= FUNGSI SLIDER ALA DJARUM =================
+function updateSlider() {
+    // Hapus status kartu yang kelihatan dulu
+    visibleCards.forEach(card => card.classList.remove('active', 'prev', 'next', 'hidden'));
+
+    if (visibleCards.length === 0) return; // Kalau kosong hasil filternya, stop.
+
+    visibleCards.forEach((card, index) => {
+        // Tentukan siapa yang di tengah, kiri, dan kanan berdasarkan array yang lolos filter
+        if (index === currentIndex) {
+            card.classList.add('active');
+        } else if (index === currentIndex - 1 || (currentIndex === 0 && index === visibleCards.length - 1)) {
+            card.classList.add('prev');
+        } else if (index === currentIndex + 1 || (currentIndex === visibleCards.length - 1 && index === 0)) {
+            card.classList.add('next');
         } else {
-            card.style.display = 'none';
+            card.classList.add('hidden');
         }
     });
 }
 
-allCheckboxes.forEach(cb => cb.addEventListener('change', applyFilter));
+function slideLeft() {
+    if (visibleCards.length <= 1) return;
+    currentIndex = (currentIndex > 0) ? currentIndex - 1 : visibleCards.length - 1;
+    updateSlider();
+}
 
-// --- LOGIKA MODAL POP-UP DENGAN DATA DATABASE ---
-const modal = document.getElementById('productModal');
-const btnDetails = document.querySelectorAll('.btn-detail');
-const closeModal = document.getElementById('closeModal');
-const backModal = document.getElementById('backModal');
-const modalTitle = document.getElementById('modalTitle');
-const modalAuthor = document.getElementById('modalAuthor');
-const modalImageContainer = document.getElementById('modalImageContainer');
+function slideRight() {
+    if (visibleCards.length <= 1) return;
+    currentIndex = (currentIndex < visibleCards.length - 1) ? currentIndex + 1 : 0;
+    updateSlider();
+}
 
-const modalBahan = document.getElementById('modalBahan');
-const modalLangkah = document.getElementById('modalLangkah');
-const modalFungsi = document.getElementById('modalFungsi');
-
-btnDetails.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        modalTitle.textContent = btn.getAttribute('data-title');
+// Klik kartu pinggir untuk geser ke tengah
+allCards.forEach(card => {
+    card.addEventListener('click', (e) => {
+        if(e.target.classList.contains('card-btn')) return; // Abaikan kalau ngeklik tombol
         
-        const authorData = btn.getAttribute('data-author');
-        modalAuthor.innerHTML = `Dibuat oleh:<br><strong>${authorData}</strong>`;
-
-        // Render Foto di Modal
-        const imgUrl = btn.getAttribute('data-img');
-        if(imgUrl) {
-            modalImageContainer.innerHTML = `<img src="${imgUrl}" style="width:100%; height:100%; object-fit:cover; border-radius:6px;">`;
-        } else {
-            modalImageContainer.innerHTML = `<span>Foto 1:1</span>`;
-        }
-
-        // Ambil data teks panjang dan pecah per baris baru (\n) ke elemen list HTML
-        const bahanRaw = btn.getAttribute('data-bahan') || 'Tidak ada informasi alat dan bahan.';
-        modalBahan.innerHTML = bahanRaw.split('\n').map(b => b.trim() ? `<li>${b}</li>` : '').join('');
-
-        const langkahRaw = btn.getAttribute('data-langkah') || 'Tidak ada informasi langkah pembuatan.';
-        modalLangkah.innerHTML = langkahRaw.split('\n').map(l => l.trim() ? `<li>${l}</li>` : '').join('');
-
-        modalFungsi.textContent = btn.getAttribute('data-fungsi') || 'Tidak ada informasi fungsi kegunaan.';
-
-        modal.style.display = 'flex';
+        if (card.classList.contains('prev')) slideLeft();
+        if (card.classList.contains('next')) slideRight();
     });
 });
 
-function tutupModal() { modal.style.display = 'none'; }
-closeModal.addEventListener('click', tutupModal);
-backModal.addEventListener('click', tutupModal);
-window.addEventListener('click', (e) => { if (e.target === modal) tutupModal(); });
+// ================= FUNGSI MODAL POPUP DINAMIS =================
+const modal = document.getElementById('productModal');
 
-document.getElementById('search-icon').addEventListener('click', () => {
-    alert('Gunakan form search bawaan backend atau masukkan input text di navbar untuk memproses pencarian.');
-});
+// Perhatiin di sini (btn) buat nangkap data dari file product-card.blade.php
+function openModal(btn) { 
+    // Ambil data dari atribut tombol yang diklik
+    const title = btn.getAttribute('data-title');
+    const img = btn.getAttribute('data-img');
+    const author = btn.getAttribute('data-author');
+    const wa = btn.getAttribute('data-wa');
+    const bahan = btn.getAttribute('data-bahan');
+    const langkah = btn.getAttribute('data-langkah');
+    const fungsi = btn.getAttribute('data-fungsi');
+    
+    // Suntik data ke dalam elemen Modal HTML
+    document.getElementById('modalTitle').innerText = title;
+    document.getElementById('modalBahan').innerHTML = `<li>${bahan || '-'}</li>`;
+    document.getElementById('modalLangkah').innerHTML = `<li>${langkah || '-'}</li>`;
+    document.getElementById('modalFungsi').innerHTML = `<li>${fungsi || '-'}</li>`;
+    document.getElementById('modalAuthor').innerHTML = `Dibuat oleh<br>"${author}"`;
+    document.getElementById('modalWaBtn').href = `https://wa.me/${wa}`;
+    
+    // Setup gambar modal
+    const imgContainer = document.getElementById('modalImg');
+    if(img) {
+        imgContainer.style.background = `url('${img}') center/cover`;
+    } else {
+        imgContainer.style.background = '#e67e22'; // Warna default kalau gaada foto dari admin
+    }
+
+    modal.style.display = 'flex'; 
+}
+
+function closeModal() { modal.style.display = 'none'; }
+
+window.onclick = function(event) { 
+    if (event.target == modal) { 
+        closeModal(); 
+    } 
+}
+
+// JALANKAN FILTER PERTAMA KALI WEB DIBUKA
+filterCards();
