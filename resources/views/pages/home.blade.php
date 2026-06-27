@@ -82,10 +82,13 @@
     <section class="contact" id="contact">
         <h2>Hubungi Kami</h2>
         <div class="contact-box">
-            <p>📍 <strong>Alamat Sekretariat:</strong><br>Kantor Kelurahan Mangunharjo, Kec. Tugu, Kota Semarang.</p>
-            <p>📞 <strong>WhatsApp (Pemesanan):</strong><br>+62 812-3456-XXXX (Ibu Pengurus UMKM)</p>
-            <p>✉️ <strong>Email:</strong><br>umkm.mangunharjo@gmail.com</p>
-            <p class="note">*Setiap pembelian produk kerajinan ini turut mendukung program ekonomi sirkular dan kebersihan lingkungan kelurahan kami.</p>
+            <p>📍 <strong>Lokasi UPPKA Bina Warga:</strong><br>Jl. Karang Gayam, RT.1/RW.4, Mangkang Wetan, Kec. Tugu,<br>Kota Semarang, Jawa Tengah 50154</p>
+            <a href="#" class="btn-map" target="_blank">Lihat di Google Maps</a>
+
+            <p style="margin-top: 25px;">📞 <strong>Narahubung UPPKA Bina Warga:</strong><br>Ibu Utami Dewi (Ketua UPPKA Bina Warga)<br>085600563765</p>
+            <a href="https://wa.me/6285600563765" class="btn-wa-contact" target="_blank">Hubungi via WhatsApp</a>
+
+            <p class="note" style="margin-top: 30px; font-style: italic;">"Terima kasih telah mendukung produk lokal serta pemberdayaan ekonomi melalui UPPKA Bina Warga."</p>
         </div>
     </section>
 
