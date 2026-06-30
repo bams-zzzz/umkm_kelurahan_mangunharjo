@@ -1,74 +1,87 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold text-gray-100 dark:text-white">Kelola UMKM</h1>
-    <div class="flex gap-3">
-        <a href="{{ route('admin.umkm.create') }}"
-           class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg">
-            + Tambah UMKM
-        </a>
-        <a href="{{ route('admin.umkm.trash') }}"
-           class="bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium px-4 py-2 rounded-lg">
-            🗑 Sampah
-        </a>
-    </div>
-</div>
+<div class="bg-white min-h-screen p-8 font-sans">
 
-@if (session('success'))
-    <div id="successAlert" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" style="transition: opacity 0.5s ease;">
-        {{ session('success') }}
-    </div>
-    <script>
-        setTimeout(function () {
-            const alertBox = document.getElementById('successAlert');
-            if (alertBox) {
-                alertBox.style.opacity = '0';
-                setTimeout(() => alertBox.remove(), 500);
-            }
-        }, 10000);
-    </script>
-@endif
+    @if (session('success'))
+        <div id="successAlert" class="max-w-6xl mx-auto bg-green-100 border-2 border-green-500 text-green-700 px-4 py-3 rounded-lg mb-6 shadow-[3px_3px_0px_rgba(0,0,0,1)]" style="transition: opacity 0.5s ease;">
+            {{ session('success') }}
+        </div>
+        <script>
+            setTimeout(function () {
+                const alertBox = document.getElementById('successAlert');
+                if (alertBox) {
+                    alertBox.style.opacity = '0';
+                    setTimeout(() => alertBox.remove(), 500);
+                }
+            }, 10000);
+        </script>
+    @endif
 
-    <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead class="bg-gray-50 dark:bg-gray-700">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nama Produk</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Pemilik</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">No WA</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                @foreach ($umkm as $item)
-                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                    <td class="px-6 py-4 text-sm text-gray-800 dark:text-gray-200">{{ $item->nama_usaha }}</td>
-                    <td class="px-6 py-4 text-sm text-gray-800 dark:text-gray-200">{{ $item->nama_pemilik }}</td>
-                    <td class="px-6 py-4 text-sm text-gray-800 dark:text-gray-200">{{ $item->no_wa }}</td>
-                    <td class="px-6 py-4 text-sm flex gap-2">
-                        <a href="{{ route('admin.umkm.edit', $item->id) }}"
-                           class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded text-xs font-medium">
-                            Edit
-                        </a>
-                        <form action="{{ route('admin.umkm.destroy', $item->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                    onclick="return confirm('Yakin hapus?')"
-                                    class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-medium">
-                                Hapus
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+    <div class="max-w-6xl mx-auto border-[5px] border-blue-500 bg-white rounded-lg overflow-hidden shadow-2xl">
 
-    <div class="mt-4">
-        {{ $umkm->links() }}
+        <div class="flex items-center justify-between px-8 py-4 border-b-[5px] border-black bg-gray-100">
+            <div class="w-1/4">
+                <img src="{{ asset('images/Logo-kelurahan.png') }}" alt="Logo" class="h-14">
+            </div>
+            <div class="w-2/4 text-center">
+                <h1 class="text-4xl font-extrabold text-black">Sampah UMKM</h1>
+            </div>
+            <div class="w-1/4 flex justify-end">
+                <a href="{{ route('admin.umkm.index') }}" class="bg-gray-300 hover:bg-gray-400 text-black font-extrabold py-2 px-6 rounded-xl border-2 border-black shadow-[3px_3px_0px_rgba(0,0,0,1)] transition transform hover:-translate-y-1">
+                    &larr; Kembali
+                </a>
+            </div>
+        </div>
+
+        <div class="p-8 bg-white">
+            <table class="w-full text-center border-collapse">
+                <thead>
+                    <tr class="text-black font-extrabold text-lg border-b-4 border-black">
+                        <th class="pb-4">Nama Produk</th>
+                        <th class="pb-4">Pemilik</th>
+                        <th class="pb-4">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($umkm as $item)
+                    <tr class="border-b-2 border-gray-200 hover:bg-gray-50 transition">
+                        <td class="py-5 font-bold text-black">{{ $item->nama_usaha ?? $item->nama_produk }}</td>
+                        <td class="py-5 font-bold text-black">{{ $item->nama_pemilik }}</td>
+                        <td class="py-5 flex justify-center gap-3">
+                            
+                            <form action="{{ route('admin.umkm.restore', $item->id) }}" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" class="bg-emerald-400 hover:bg-emerald-500 text-black font-extrabold py-2 px-6 rounded-xl border-2 border-black shadow-[3px_3px_0px_rgba(0,0,0,1)] transition transform hover:-translate-y-1">
+                                    Restore
+                                </button>
+                            </form>
+                            
+                            <form action="{{ route('admin.umkm.forceDelete', $item->id) }}" method="POST" class="inline" onsubmit="return confirm('Hapus permanen nih bos? Nggak bisa balik lagi lho!');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-500 hover:bg-red-600 text-black font-extrabold py-2 px-6 rounded-xl border-2 border-black shadow-[3px_3px_0px_rgba(0,0,0,1)] transition transform hover:-translate-y-1">
+                                    Hapus Permanen
+                                </button>
+                            </form>
+                            
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="3" class="py-10 text-center text-gray-500 font-bold text-lg">Tong sampah kosong bos. Aman!</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+
+            @if($umkm->hasPages())
+            <div class="mt-8 flex justify-center">
+                {{ $umkm->links() }}
+            </div>
+            @endif
+        </div>
+
     </div>
 </div>
 @endsection

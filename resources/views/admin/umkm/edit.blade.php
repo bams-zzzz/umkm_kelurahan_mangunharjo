@@ -1,72 +1,75 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-100 dark:text-white">Edit UMKM</h1>
-        <a href="{{ route('admin.umkm.index') }}"
-           class="bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium px-4 py-2 rounded-lg">
-            &larr; Kembali
-        </a>
-    </div>
+<div class="bg-white min-h-screen p-8 font-sans">
 
-    @if ($errors->any())
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            <ul class="list-disc list-inside text-sm">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+    <div class="max-w-4xl mx-auto border-[5px] border-blue-500 bg-white rounded-lg overflow-hidden shadow-2xl">
+
+        <div class="flex items-center justify-between px-8 py-5 border-b-[5px] border-black bg-gray-100">
+            <h1 class="text-3xl font-extrabold text-black">Edit Data UMKM</h1>
+            <a href="{{ route('admin.umkm.index') }}" class="bg-gray-300 hover:bg-gray-400 text-black font-extrabold py-2 px-6 rounded-xl border-2 border-black shadow-[3px_3px_0px_rgba(0,0,0,1)] transition transform hover:-translate-y-1">
+                &larr; Kembali
+            </a>
         </div>
-    @endif
 
-    <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
-        <form action="{{ route('admin.umkm.update', $umkm->id) }}" method="POST" enctype="multipart/form-data"
-              class="p-6 space-y-6">
+        @if ($errors->any())
+            <div class="bg-red-200 border-b-[5px] border-black px-8 py-5">
+                <p class="font-extrabold text-red-900 mb-2">Waduh, ada yang salah nih bos:</p>
+                <ul class="list-disc list-inside font-bold text-red-800">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('admin.umkm.update', $umkm->id) }}" method="POST" enctype="multipart/form-data" class="p-8 space-y-6 bg-white">
             @csrf
             @method('PUT')
 
             <div>
-                <label for="nama_produk" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Produk</label>
-                <input type="text" name="nama_produk" id="nama_produk" value="{{ old('nama_produk', $umkm->nama_produk) }}"
-                       class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                <label for="nama_produk" class="block font-extrabold text-black mb-2 text-lg">Nama Produk</label>
+                <input type="text" name="nama_produk" id="nama_produk" value="{{ old('nama_produk', $umkm->nama_usaha ?? $umkm->nama_produk) }}"
+                       class="w-full rounded-xl border-2 border-black bg-white text-black px-4 py-3 font-bold focus:outline-none focus:bg-yellow-50 transition shadow-[4px_4px_0px_rgba(0,0,0,1)]">
             </div>
 
             <div>
-                <label for="nama_pemilik" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Pemilik</label>
+                <label for="nama_pemilik" class="block font-extrabold text-black mb-2 text-lg">Nama Pemilik</label>
                 <input type="text" name="nama_pemilik" id="nama_pemilik" value="{{ old('nama_pemilik', $umkm->nama_pemilik) }}"
-                       class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                       class="w-full rounded-xl border-2 border-black bg-white text-black px-4 py-3 font-bold focus:outline-none focus:bg-yellow-50 transition shadow-[4px_4px_0px_rgba(0,0,0,1)]">
             </div>
 
             <div>
-                <label for="alamat" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Alamat</label>
+                <label for="alamat" class="block font-extrabold text-black mb-2 text-lg">Alamat</label>
                 <input type="text" name="alamat" id="alamat" value="{{ old('alamat', $umkm->alamat) }}"
-                       class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                       class="w-full rounded-xl border-2 border-black bg-white text-black px-4 py-3 font-bold focus:outline-none focus:bg-yellow-50 transition shadow-[4px_4px_0px_rgba(0,0,0,1)]">
             </div>
 
             <div>
-                <label for="lokasi_usaha" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Lokasi Usaha</label>
+                <label for="lokasi_usaha" class="block font-extrabold text-black mb-2 text-lg">Lokasi Usaha</label>
                 <input type="text" name="lokasi_usaha" id="lokasi_usaha" value="{{ old('lokasi_usaha', $umkm->lokasi_usaha) }}"
-                       class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                       class="w-full rounded-xl border-2 border-black bg-white text-black px-4 py-3 font-bold focus:outline-none focus:bg-yellow-50 transition shadow-[4px_4px_0px_rgba(0,0,0,1)]">
             </div>
 
             <div>
-                <label for="no_wa" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">No WhatsApp</label>
+                <label for="no_wa" class="block font-extrabold text-black mb-2 text-lg">
+                    No WhatsApp <span class="text-sm text-gray-500 font-normal">(format: 628xxxx)</span>
+                </label>
                 <input type="text" name="no_wa" id="no_wa" value="{{ old('no_wa', $umkm->no_wa) }}"
-                       class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
+                       class="w-full rounded-xl border-2 border-black bg-white text-black px-4 py-3 font-bold focus:outline-none focus:bg-yellow-50 transition shadow-[4px_4px_0px_rgba(0,0,0,1)]">
             </div>
 
             <div>
-                <label for="deskripsi_produk" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Deskripsi Produk</label>
+                <label for="deskripsi_produk" class="block font-extrabold text-black mb-2 text-lg">Deskripsi Produk</label>
                 <textarea name="deskripsi_produk" id="deskripsi_produk" rows="4"
-                          class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition resize-y">{{ old('deskripsi_produk', $umkm->deskripsi_produk) }}</textarea>
+                          class="w-full rounded-xl border-2 border-black bg-white text-black px-4 py-3 font-bold focus:outline-none focus:bg-yellow-50 transition shadow-[4px_4px_0px_rgba(0,0,0,1)] resize-y">{{ old('deskripsi_produk', $umkm->deskripsi_produk) }}</textarea>
             </div>
 
             <div>
-                <label for="kategori" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kategori</label>
+                <label for="kategori" class="block font-extrabold text-black mb-2 text-lg">Kategori</label>
                 <select name="kategori" id="kategori"
-                        class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
-                    <option value="">Pilih Kategori</option>
+                        class="w-full rounded-xl border-2 border-black bg-white text-black px-4 py-3 font-bold focus:outline-none focus:bg-yellow-50 transition shadow-[4px_4px_0px_rgba(0,0,0,1)]">
+                    <option value="" class="font-bold">Pilih Kategori</option>
                     <option value="camilan" {{ old('kategori', $umkm->kategori) == 'camilan' ? 'selected' : '' }}>Camilan</option>
                     <option value="olahan_ikan" {{ old('kategori', $umkm->kategori) == 'olahan_ikan' ? 'selected' : '' }}>Olahan Ikan</option>
                     <option value="olahan_telur" {{ old('kategori', $umkm->kategori) == 'olahan_telur' ? 'selected' : '' }}>Olahan Telur</option>
@@ -77,48 +80,40 @@
             </div>
 
             <div>
-                <label for="bahan_dan_proses_produksi" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bahan & Proses Produksi</label>
+                <label for="bahan_dan_proses_produksi" class="block font-extrabold text-black mb-2 text-lg">Bahan & Proses Produksi</label>
                 <textarea name="bahan_dan_proses_produksi" id="bahan_dan_proses_produksi" rows="6"
-                          class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition resize-y">{{ old('bahan_dan_proses_produksi', $umkm->bahan_dan_proses_produksi) }}</textarea>
+                          class="w-full rounded-xl border-2 border-black bg-white text-black px-4 py-3 font-bold focus:outline-none focus:bg-yellow-50 transition shadow-[4px_4px_0px_rgba(0,0,0,1)] resize-y">{{ old('bahan_dan_proses_produksi', $umkm->bahan_dan_proses_produksi ?? $umkm->alat_bahan) }}</textarea>
             </div>
 
             <div>
-                <label for="keunggulan_produk" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Keunggulan Produk</label>
+                <label for="keunggulan_produk" class="block font-extrabold text-black mb-2 text-lg">Keunggulan Produk</label>
                 <textarea name="keunggulan_produk" id="keunggulan_produk" rows="4"
-                          class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition resize-y">{{ old('keunggulan_produk', $umkm->keunggulan_produk) }}</textarea>
+                          class="w-full rounded-xl border-2 border-black bg-white text-black px-4 py-3 font-bold focus:outline-none focus:bg-yellow-50 transition shadow-[4px_4px_0px_rgba(0,0,0,1)] resize-y">{{ old('keunggulan_produk', $umkm->keunggulan_produk ?? $umkm->fungsi_kegunaan) }}</textarea>
             </div>
 
             <div>
-                <label for="foto_profil" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Foto Profil <span class="text-gray-400">(kosongkan jika tidak ganti)</span>
-                </label>
-@if ($umkm->foto_profil)
-    <div class="mb-3">
-        <p class="text-xs text-gray-500 mb-2">Foto saat ini:</p>
-        <img src="{{ asset('storage/' . $umkm->foto_profil) }}"
-             alt="Foto {{ $umkm->nama_produk }}"
-             class="h-24 w-24 object-cover rounded-lg border border-gray-200 dark:border-gray-600 mb-2">
-        <label class="flex items-center gap-2 text-sm text-red-600 dark:text-red-400">
-            <input type="checkbox" name="hapus_foto" value="1" class="rounded border-gray-300">
-            Hapus foto ini
-        </label>
-    </div>
-@endif
+                <label for="foto_profil" class="block font-extrabold text-black mb-2 text-lg">Foto Profil (Kosongkan jika tidak diganti)</label>
+                @if($umkm->foto_profil)
+                    <div class="mb-3">
+                        <img src="{{ asset('storage/' . $umkm->foto_profil) }}" alt="Foto Lama" class="h-32 border-2 border-black rounded-lg shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+                    </div>
+                @endif
                 <input type="file" name="foto_profil" id="foto_profil"
-                       class="w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 dark:file:bg-gray-700 dark:file:text-gray-300 file:cursor-pointer file:transition">
+                       class="w-full text-black font-bold file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-2 file:border-black file:text-sm file:font-extrabold file:bg-blue-200 file:text-black hover:file:bg-blue-300 file:shadow-[3px_3px_0px_rgba(0,0,0,1)] file:cursor-pointer transition">
             </div>
 
-            <div class="flex items-center gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div class="flex items-center gap-5 pt-8 mt-4 border-t-[4px] border-dashed border-gray-300">
                 <button type="submit"
-                        class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-6 py-2.5 rounded-lg transition">
-                    Update
+                        class="bg-yellow-300 hover:bg-yellow-400 text-black font-extrabold py-3 px-8 rounded-xl border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] transition transform hover:-translate-y-1">
+                    Update Data
                 </button>
                 <a href="{{ route('admin.umkm.index') }}"
-                   class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition">
-                    Batal
+                   class="text-gray-500 hover:text-black font-bold underline transition">
+                    Batal Aja
                 </a>
             </div>
         </form>
+
     </div>
 </div>
 @endsection
