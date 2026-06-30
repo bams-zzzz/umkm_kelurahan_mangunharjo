@@ -26,10 +26,10 @@
             @csrf
 
             <div>
-                <label for="nama_usaha" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Nama Usaha
+                <label for="nama_produk" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Nama Produk
                 </label>
-                <input type="text" name="nama_usaha" id="nama_usaha" value="{{ old('nama_usaha') }}"
+                <input type="text" name="nama_produk" id="nama_produk" value="{{ old('nama_produk') }}"
                        class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
             </div>
 
@@ -43,9 +43,17 @@
 
             <div>
                 <label for="alamat" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Lokasi Usaha
+                    Alamat
                 </label>
                 <input type="text" name="alamat" id="alamat" value="{{ old('alamat') }}"
+                       class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+            </div>
+
+            <div>
+                <label for="lokasi_usaha" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Lokasi Usaha
+                </label>
+                <input type="text" name="lokasi_usaha" id="lokasi_usaha" value="{{ old('lokasi_usaha') }}"
                        class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
             </div>
 
@@ -57,7 +65,53 @@
                        class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
             </div>
 
+            <div>
+                <label for="deskripsi_produk" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Deskripsi Produk
+                </label>
+                <textarea name="deskripsi_produk" id="deskripsi_produk" rows="4"
+                          class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition resize-y">{{ old('deskripsi_produk') }}</textarea>
+            </div>
 
+            <div>
+                <label for="kategori" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Kategori
+                </label>
+                <select name="kategori" id="kategori"
+                        class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                    <option value="">Pilih Kategori</option>
+                    <option value="camilan" {{ old('kategori') == 'camilan' ? 'selected' : '' }}>Camilan</option>
+                    <option value="olahan_ikan" {{ old('kategori') == 'olahan_ikan' ? 'selected' : '' }}>Olahan Ikan</option>
+                    <option value="olahan_telur" {{ old('kategori') == 'olahan_telur' ? 'selected' : '' }}>Olahan Telur</option>
+                    <option value="minuman" {{ old('kategori') == 'minuman' ? 'selected' : '' }}>Minuman</option>
+                    <option value="kebutuhan_harian" {{ old('kategori') == 'kebutuhan_harian' ? 'selected' : '' }}>Kebutuhan Harian</option>
+                    <option value="jasa" {{ old('kategori') == 'jasa' ? 'selected' : '' }}>Jasa</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="bahan_dan_proses_produksi" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Bahan & Proses Produksi
+                </label>
+                <textarea name="bahan_dan_proses_produksi" id="bahan_dan_proses_produksi" rows="6"
+                          class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition resize-y">{{ old('bahan_dan_proses_produksi') }}</textarea>
+            </div>
+
+            <div>
+                <label for="keunggulan_produk" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Keunggulan Produk
+                </label>
+                <textarea name="keunggulan_produk" id="keunggulan_produk" rows="4"
+                          class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition resize-y">{{ old('keunggulan_produk') }}</textarea>
+            </div>
+
+            <div>
+                <label for="foto_profil" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Foto Profil
+                </label>
+                <input type="file" name="foto_profil" id="foto_profil"
+                       class="w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 dark:file:bg-gray-700 dark:file:text-gray-300 file:cursor-pointer file:transition">
+            </div>
 
             <div class="flex items-center gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <button type="submit"

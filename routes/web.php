@@ -27,7 +27,14 @@ Route::middleware('auth')->group(function () {
 
 // Admin CRUD (protected)
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('umkm', UmkmController::class);
-    Route::resource('produk', ProdukController::class);
-    Route::resource('kategori', KategoriProdukController::class);
+Route::resource('umkm', UmkmController::class);
+Route::get('umkm-sampah', [UmkmController::class, 'trash'])->name('umkm.trash');
+Route::patch('umkm/{id}/restore', [UmkmController::class, 'restore'])->name('umkm.restore');
+Route::delete('umkm/{id}/force-delete', [UmkmController::class, 'forceDelete'])->name('umkm.forceDelete');
+
+Route::resource('produk', ProdukController::class);
+Route::get('produk-sampah', [ProdukController::class, 'trash'])->name('produk.trash');
+Route::patch('produk/{id}/restore', [ProdukController::class, 'restore'])->name('produk.restore');
+Route::delete('produk/{id}/force-delete', [ProdukController::class, 'forceDelete'])->name('produk.forceDelete');
+Route::resource('kategori', KategoriProdukController::class);
 });

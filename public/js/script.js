@@ -107,30 +107,30 @@ allCards.forEach(card => {
 const modal = document.getElementById('productModal');
 
 // Perhatiin di sini (btn) buat nangkap data dari file product-card.blade.php
+// Perhatiin di sini (btn) buat nangkap data dari file product-card.blade.php
 function openModal(btn) { 
-    // Ambil data dari atribut tombol yang diklik
     const title = btn.getAttribute('data-title');
     const img = btn.getAttribute('data-img');
     const author = btn.getAttribute('data-author');
+    const deskripsi = btn.getAttribute('data-deskripsi');
     const wa = btn.getAttribute('data-wa');
     const bahan = btn.getAttribute('data-bahan');
-    const langkah = btn.getAttribute('data-langkah');
-    const fungsi = btn.getAttribute('data-fungsi');
+    const keunggulan = btn.getAttribute('data-keunggulan');
+    const lokasi = btn.getAttribute('data-lokasi');
     
-    // Suntik data ke dalam elemen Modal HTML
     document.getElementById('modalTitle').innerText = title;
+    document.getElementById('modalDeskripsi').innerHTML = `<li>${deskripsi || '-'}</li>`;
     document.getElementById('modalBahan').innerHTML = `<li>${bahan || '-'}</li>`;
-    document.getElementById('modalLangkah').innerHTML = `<li>${langkah || '-'}</li>`;
-    document.getElementById('modalFungsi').innerHTML = `<li>${fungsi || '-'}</li>`;
+    document.getElementById('modalKeunggulan').innerHTML = `<li>${keunggulan || '-'}</li>`;
+    document.getElementById('modalLokasi').innerHTML = `<li>${lokasi || '-'}</li>`;
     document.getElementById('modalAuthor').innerHTML = `Dibuat oleh<br>"${author}"`;
     document.getElementById('modalWaBtn').href = `https://wa.me/${wa}`;
     
-    // Setup gambar modal
     const imgContainer = document.getElementById('modalImg');
     if(img) {
         imgContainer.style.background = `url('${img}') center/cover`;
     } else {
-        imgContainer.style.background = '#e67e22'; // Warna default kalau gaada foto dari admin
+        imgContainer.style.background = '#e67e22';
     }
 
     modal.style.display = 'flex'; 

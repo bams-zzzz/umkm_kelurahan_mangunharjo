@@ -94,4 +94,22 @@ public function store(Request $request)
         $produk->delete();
         return redirect()->route('admin.produk.index')->with('success', 'Produk berhasil dihapus.');
     }
+
+    public function trash()
+{
+    $produk = Produk::onlyTrashed()->latest()->paginate(10);
+    return view('admin.produk.trash', compact('produk'));
+}
+
+public function restore($id)
+{
+    Produk::onlyTrashed()->findOrFail($id)->restore();
+    return redirect()->route('admin.produk.index')->with('success', 'Produk berhasil dikembalikan.');
+}
+
+public function forceDelete($id)
+{
+    Produk::onlyTrashed()->findOrFail($id)->forceDelete();
+    return redirect()->route('admin.produk.trash')->with('success', 'Produk dihapus permanen.');
+}
 }

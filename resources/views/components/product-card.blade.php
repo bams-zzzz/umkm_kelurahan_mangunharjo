@@ -1,36 +1,46 @@
 @php
-    $kategoriPangan = ['Camilan', 'Olahan Ikan', 'Olahan Telur', 'Minuman'];
-    $namaKategori = $item->kategori->nama_kategori ?? '';
-    $isPangan = in_array($namaKategori, $kategoriPangan);
-    $mainType = $isPangan ? 'pangan' : 'jasa';
-
-    $waNumber = preg_replace('/[^0-9]/', '', $item->umkm->no_wa ?? '');
-    if (str_starts_with($waNumber, '0')) {
-        $waNumber = '62' . substr($waNumber, 1);
-    }
+    $pangaKategori = ['camilan', 'olahan_ikan', 'olahan_telur', 'minuman'];
+    $tabType = in_array($item->kategori, $pangaKategori) ? 'pangan' : 'jasa';
+    
+    $kategoriLabel = [
+        'camilan' => 'Camilan',
+        'olahan_ikan' => 'Olahan Ikan',
+        'olahan_telur' => 'Olahan Telur',
+        'minuman' => 'Minuman',
+        'kebutuhan_harian' => 'Kebutuhan Harian',
+        'jasa' => 'Jasa',
+    ];
 @endphp
 
-<div class="card" data-tab="{{ $mainType }}" data-category="{{ $namaKategori }}">
-    <div class="card-img-placeholder" style="padding: 0; overflow: hidden; background: transparent;">
-        @if($item->foto)
-            <img src="{{ asset('storage/' . $item->foto) }}" alt="{{ $item->nama_produk }}" style="width: 100%; height: 100%; object-fit: cover;">
+<div class="card d-none" 
+     data-tab="{{ $tabType }}" 
+     data-category="{{ $kategoriLabel[$item->kategori] ?? $item->kategori }}">
+    
+    <div class="card-image-box">
+        @if($item->foto_profil)
+            <img src="{{ asset('storage/' . $item->foto_profil) }}" alt="{{ $item->nama_produk }}">
         @else
-            <div style="background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #888;">FOTO 1:1</div>
+            <span style="color: #888; font-size: 14px;">FOTO 1:1</span>
         @endif
     </div>
 
-    <h3 class="card-title">{{ $item->nama_produk }}</h3>
-    <p class="card-cat">{{ $namaKategori }}</p>
+    <div class="produk-info">
+        <h4>{{ $item->nama_produk }}</h4>
+        <p style="text-transform: capitalize; font-size: 13px; color: #e67e22; font-weight: bold;">
+            {{ $kategoriLabel[$item->kategori] ?? $item->kategori }}
+        </p>
+    </div>
 
-    <button class="card-btn"
-            onclick="openModal(this)"
-            data-title="{{ $item->nama_produk }}"
-            data-img="{{ $item->foto ? asset('storage/' . $item->foto) : '' }}"
-            data-author="{{ $item->umkm->nama_pemilik ?? '-' }} ({{ $item->umkm->alamat ?? '-' }})"
-            data-wa="{{ $waNumber }}"
-            data-bahan="{{ $item->alat_bahan }}"
-            data-langkah="{{ $item->langkah_pembuatan }}"
-            data-fungsi="{{ $item->fungsi_kegunaan }}">
-        Lihat Detail
-    </button>
+<button class="card-btn"
+        onclick="openModal(this)"
+        data-title="{{ $item->nama_produk }}"
+        data-img="{{ $item->foto_profil ? asset('storage/' . $item->foto_profil) : '' }}"
+        data-author="{{ $item->nama_pemilik }} ({{ $item->alamat }})"
+        data-deskripsi="{{ $item->deskripsi_produk }}"
+        data-wa="{{ $item->no_wa }}"
+        data-bahan="{{ $item->bahan_dan_proses_produksi }}"
+        data-keunggulan="{{ $item->keunggulan_produk }}"
+        data-lokasi="{{ $item->lokasi_usaha }}">
+    Lihat Detail
+</button>
 </div>

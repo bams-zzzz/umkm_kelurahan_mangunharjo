@@ -5,13 +5,13 @@
     
     <div class="nav-right">
         <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#produk">Produk</a>
-            <a href="#contact">Contact</a>
+            <a href="{{ route('home') }}">Home</a>
+            <a href="{{ route('home') }}#produk">Produk</a>
+            <a href="{{ route('home') }}#contact">Contact</a>
         </div>
-        <div class="search-container">
-            <input type="text" class="search-input" placeholder="Search Here...">
-            <span class="search-icon">&#128269;</span>
-        </div>
+        <form action="{{ route('katalog') }}" method="GET" class="search-container">
+            <input type="text" name="search" class="search-input" placeholder="Search Here..." value="{{ request('search') }}">
+            <button type="submit" class="search-icon" style="background:none; border:none;">&#128269;</button>
+        </form>
     </div>
 </nav>
