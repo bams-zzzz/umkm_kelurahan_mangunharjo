@@ -5,7 +5,7 @@
 @section('content')
 
     <header class="hero" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{{ asset('images/home-page.png') }}'); background-size: cover; background-position: center;">
-        <h1>Galeri Produk UMKM<br>UPPKA Bina Usaha</h1>
+        <h1>Galeri Produk UMKM<br>UPPKA Bina Warga</h1>
         <p>Kenali Produk, Proses Produksi, dan Cerita di Balik Setiap Karya Kami</p>
     </header>
 
