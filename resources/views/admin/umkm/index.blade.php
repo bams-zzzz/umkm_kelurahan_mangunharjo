@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-white min-h-screen p-8 font-sans">
+<div class="bg-gray-50 min-h-screen p-8 font-sans">
 
     @if (session('success'))
-        <div id="successAlert" class="max-w-6xl mx-auto bg-green-100 border-2 border-green-500 text-green-700 px-4 py-3 rounded-lg mb-6 shadow-[3px_3px_0px_rgba(0,0,0,1)]" style="transition: opacity 0.5s ease;">
+        <div id="successAlert" class="max-w-6xl mx-auto bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-6" style="transition: opacity 0.5s ease;">
             {{ session('success') }}
         </div>
         <script>
@@ -18,66 +18,84 @@
         </script>
     @endif
 
-    <div class="max-w-6xl mx-auto border-[5px] border-blue-500 bg-white rounded-lg overflow-hidden shadow-2xl">
+    <div class="max-w-6xl mx-auto border border-gray-300 bg-white rounded-xl overflow-hidden shadow-sm">
 
-        <div class="flex items-center justify-between px-8 py-4 border-b-[5px] border-black bg-gray-100">
-            <div class="w-1/4">
-                <img src="{{ asset('images/Logo-kelurahan.png') }}" alt="Logo" class="h-14">
+        <div class="flex items-center justify-between gap-4 px-8 py-5 border-b border-gray-300 bg-gray-50">
+            <div class="flex items-center gap-4">
+                <img src="{{ asset('images/Logo-kelurahan.png') }}" alt="Logo" class="h-12">
+                <h1 class="text-3xl font-bold text-black">Kelola UMKM</h1>
             </div>
-            <div class="w-2/4 text-center">
-                <h1 class="text-4xl font-extrabold text-black">Sampah UMKM</h1>
-            </div>
-            <div class="w-1/4 flex justify-end">
-                <a href="{{ route('admin.umkm.index') }}" class="bg-gray-300 hover:bg-gray-400 text-black font-extrabold py-2 px-6 rounded-xl border-2 border-black shadow-[3px_3px_0px_rgba(0,0,0,1)] transition transform hover:-translate-y-1">
-                    &larr; Kembali
-                </a>
+
+            <div x-data="{ open: false }" class="relative">
+                <button @click="open = !open" @click.outside="open = false" class="flex items-center gap-1 text-gray-600 font-medium hover:text-black transition">
+                    Admin Desa
+                    <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <div x-show="open" x-cloak class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                            Logout
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
 
-        <div class="p-8 bg-white">
-            <table class="w-full text-center border-collapse">
+        <div class="flex justify-end gap-3 px-8 pt-6">
+            <a href="{{ route('admin.umkm.create') }}" class="bg-emerald-400 hover:bg-emerald-500 text-black font-semibold py-2 px-6 rounded-full shadow-sm transition">
+                Tambah UMKM
+            </a>
+            <a href="{{ route('admin.umkm.trash') }}" class="bg-red-400 hover:bg-red-500 text-black font-semibold py-2 px-6 rounded-full shadow-sm transition">
+                Hapus
+            </a>
+        </div>
+
+        <div class="p-8 bg-white" style="overflow-x: auto; width: 100%;">
+            <table class="w-full text-center border-collapse min-w-[700px]">
                 <thead>
-                    <tr class="text-black font-extrabold text-lg border-b-4 border-black">
+                    <tr class="text-black font-bold text-base border-b border-gray-300">
                         <th class="pb-4">Nama Produk</th>
                         <th class="pb-4">Pemilik</th>
+                        <th class="pb-4">No WA</th>
                         <th class="pb-4">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($umkm as $item)
-                    <tr class="border-b-2 border-gray-200 hover:bg-gray-50 transition">
-                        <td class="py-5 font-bold text-black">{{ $item->nama_usaha ?? $item->nama_produk }}</td>
-                        <td class="py-5 font-bold text-black">{{ $item->nama_pemilik }}</td>
-                        <td class="py-5 flex justify-center gap-3">
-                            
-                            <form action="{{ route('admin.umkm.restore', $item->id) }}" method="POST" class="inline">
-                                @csrf
-                                <button type="submit" class="bg-emerald-400 hover:bg-emerald-500 text-black font-extrabold py-2 px-6 rounded-xl border-2 border-black shadow-[3px_3px_0px_rgba(0,0,0,1)] transition transform hover:-translate-y-1">
-                                    Restore
-                                </button>
-                            </form>
-                            
-                            <form action="{{ route('admin.umkm.forceDelete', $item->id) }}" method="POST" class="inline" onsubmit="return confirm('Hapus permanen nih bos? Nggak bisa balik lagi lho!');">
+                    @forelse ($produk as $item)
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+<td class="py-5 px-2 font-medium text-black">{{ $item->nama_produk }}</td>
+<td class="py-5 px-2 font-medium text-black">{{ $item->umkm->nama_pemilik ?? '-' }}</td>
+<td class="py-5 px-2 font-medium text-black">{{ $item->umkm->no_wa ?? '-' }}</td>
+                        <td class="py-5 px-2 flex justify-center gap-3">
+
+                            <a href="{{ route('admin.produk.edit', $item->id) }}" class="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-4 rounded-full shadow-sm transition">
+                                Edit
+                            </a>
+
+                            <form action="{{ route('admin.produk.destroy', $item->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin mau hapus produk ini? (masih bisa dipulihkan dari Sampah)');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="bg-red-500 hover:bg-red-600 text-black font-extrabold py-2 px-6 rounded-xl border-2 border-black shadow-[3px_3px_0px_rgba(0,0,0,1)] transition transform hover:-translate-y-1">
-                                    Hapus Permanen
+                                <button type="submit" class="bg-red-400 hover:bg-red-500 text-black font-semibold py-2 px-4 rounded-full shadow-sm transition">
+                                    Hapus
                                 </button>
                             </form>
-                            
+
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="3" class="py-10 text-center text-gray-500 font-bold text-lg">Tong sampah kosong bos. Aman!</td>
+                        <td colspan="4" class="py-10 text-center text-gray-500 font-medium text-lg">Belum ada data UMKM.</td>
                     </tr>
                     @endforelse
                 </tbody>
             </table>
 
-            @if($umkm->hasPages())
+            @if($produk->hasPages())
             <div class="mt-8 flex justify-center">
-                {{ $umkm->links() }}
+                {{ $produk->links() }}
             </div>
             @endif
         </div>

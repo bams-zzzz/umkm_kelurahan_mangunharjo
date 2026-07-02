@@ -11,11 +11,11 @@ class Umkm extends Model
 
     protected $table = 'umkm';
 
-protected $fillable = [
-    'nama_produk', 'nama_pemilik', 'alamat', 'lokasi_usaha', 'no_wa',
-    'deskripsi_produk', 'foto_profil', 'user_id', 'kategori',
-    'bahan_dan_proses_produksi', 'keunggulan_produk',
-];
+    protected $fillable = [
+        'nama_produk', 'nama_pemilik', 'alamat', 'lokasi_usaha', 'no_wa',
+        'deskripsi_produk', 'foto_profil', 'user_id',
+        'bahan_dan_proses_produksi',
+    ];
 
     public function produk()
     {

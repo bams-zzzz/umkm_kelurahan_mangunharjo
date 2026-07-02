@@ -109,6 +109,15 @@ const modal = document.getElementById('productModal');
 // Perhatiin di sini (btn) buat nangkap data dari file product-card.blade.php
 // Perhatiin di sini (btn) buat nangkap data dari file product-card.blade.php
 function openModal(btn) { 
+    const card = btn.closest('.card');
+    if (card && card.parentElement && card.parentElement.classList.contains('cards-track')) {
+        if (!card.classList.contains('active')) {
+            if (card.classList.contains('prev')) slideLeft();
+            if (card.classList.contains('next')) slideRight();
+            return;
+        }
+    }
+
     const title = btn.getAttribute('data-title');
     const img = btn.getAttribute('data-img');
     const author = btn.getAttribute('data-author');

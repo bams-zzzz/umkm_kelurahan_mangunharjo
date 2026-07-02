@@ -95,11 +95,16 @@
                 <label for="foto_profil" class="block font-extrabold text-black mb-2 text-lg">Foto Profil (Kosongkan jika tidak diganti)</label>
                 @if($umkm->foto_profil)
                     <div class="mb-3">
-                        <img src="{{ asset('storage/' . $umkm->foto_profil) }}" alt="Foto Lama" class="h-32 border-2 border-black rounded-lg shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+                        <img src="{{ asset('storage/' . $umkm->foto_profil) }}" alt="Foto Lama" class="h-32 border-2 border-black rounded-lg shadow-[2px_2px_0px_rgba(0,0,0,1)] mb-2">
+                        <label class="flex items-center gap-2 text-sm font-extrabold text-red-600 cursor-pointer w-fit">
+                            <input type="checkbox" name="hapus_foto" value="1" class="w-4 h-4 border-2 border-black">
+                            🗑 Hapus foto ini
+                        </label>
                     </div>
                 @endif
                 <input type="file" name="foto_profil" id="foto_profil"
                        class="w-full text-black font-bold file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-2 file:border-black file:text-sm file:font-extrabold file:bg-blue-200 file:text-black hover:file:bg-blue-300 file:shadow-[3px_3px_0px_rgba(0,0,0,1)] file:cursor-pointer transition">
+                <p class="text-xs text-gray-500 mt-1 font-medium">Kalau upload foto baru, foto lama otomatis kehapus. Centang "Hapus foto ini" kalau cuma mau kosongin tanpa ganti.</p>
             </div>
 
             <div class="flex items-center gap-5 pt-8 mt-4 border-t-[4px] border-dashed border-gray-300">
